@@ -63,7 +63,7 @@ const MapController = ({ targetLocation, showList }) => {
   return null;
 };
 
-const TrashMap = () => {
+const HeatMap = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -265,4 +265,4 @@ const TrashMap = () => {
   );
 };
 
-export default TrashMap;
+export default HeatMap;

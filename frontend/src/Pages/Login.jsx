@@ -10,10 +10,10 @@ export default function LoginForm() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-const fillDemo = (email, password) => {
-  setFormData({ email, password });
-  setErrors({}); // clear any previous errors
-};
+  const fillDemo = (email, password) => {
+    setFormData({ email, password });
+    setErrors({}); // clear any previous errors
+  };
 
   const validate = () => {
     let newErrors = {};
@@ -48,7 +48,7 @@ const fillDemo = (email, password) => {
       const { token, user } = response.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
-      
+
       // Dispatch custom event to notify navbar of login
       window.dispatchEvent(new Event("storage"));
 
@@ -131,7 +131,8 @@ const fillDemo = (email, password) => {
           </p>
           <div className="border-t pt-4">
             <p className="text-xs text-gray-500 mb-2 text-center">
-              Demo Accounts (for testing) - Just Tap the Acount You Want to Login
+              Demo Accounts (for testing) - Just Tap the Acount You Want to
+              Login
             </p>
 
             <div className="grid gap-2">
