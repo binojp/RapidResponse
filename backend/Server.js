@@ -14,29 +14,33 @@ const app = express();
 
 app.use(express.json());
 
-// Enable CORS for Cloudflare frontend
+// CORS middleware
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://rapidresponse-ege.pages.dev",
-    credentials: true,
+    origin:
+      process.env.FRONTEND_URL || "https://rapidresponse-ege.pages.dev",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
+// Preflight OPTIONS handler
+app.options("*", cors());
+
 // Serve static uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Connect MongoDB
-mongoose
-  .connect(process.env.MONGO_URI, {})
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error(err));
 
 // Routes
 app.use("/api", authRoutes);
 app.use("/api/incidents", incidentRoutes);
 app.use("/api/user", userRouter);
+
+// MongoDB connection
+mongoose
+  .connect(process.env.MONGO_URI, {})
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error(err));
 
 const PORT = process.env.PORT || 5000;
 
