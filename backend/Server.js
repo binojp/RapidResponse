@@ -30,7 +30,7 @@ app.options("*", cors());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // API Routes - Ensure no trailing slashes here
-app.use("/api/auth", authRoutes); // Changed from "/api" to be more explicit
+app.use("/api/", authRoutes); // Changed from "/api" to be more explicit
 app.use("/api/incidents", incidentRoutes);
 app.use("/api/user", userProfileRoutes);
 
