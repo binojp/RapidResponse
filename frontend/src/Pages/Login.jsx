@@ -10,6 +10,10 @@ export default function LoginForm() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+const fillDemo = (email, password) => {
+  setFormData({ email, password });
+  setErrors({}); // clear any previous errors
+};
 
   const validate = () => {
     let newErrors = {};
@@ -125,6 +129,37 @@ export default function LoginForm() {
               Sign up
             </a>
           </p>
+          <div className="border-t pt-4">
+            <p className="text-xs text-gray-500 mb-2 text-center">
+              Demo Accounts (for testing) - Just Tap the Acount You Want to Login
+            </p>
+
+            <div className="grid gap-2">
+              <button
+                type="button"
+                onClick={() => fillDemo("arun@app.com", "123456")}
+                className="w-full border border-gray-300 text-sm py-2 rounded-md hover:bg-gray-100"
+              >
+                Citizen Demo – arun@app.com
+              </button>
+
+              <button
+                type="button"
+                onClick={() => fillDemo("alex@app.com", "123456")}
+                className="w-full border border-gray-300 text-sm py-2 rounded-md hover:bg-gray-100"
+              >
+                Citizen Demo – alex@app.com
+              </button>
+
+              <button
+                type="button"
+                onClick={() => fillDemo("admin@app.com", "123456")}
+                className="w-full border border-red-300 text-sm py-2 rounded-md hover:bg-red-50"
+              >
+                Responder Demo – admin@app.com
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </div>

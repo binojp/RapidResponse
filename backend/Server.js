@@ -1,25 +1,48 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
+const dotenv = require("dotenv");
+const path = require("path");
+
+const authRoutes = require("./routes/auth");
+const incidentRoutes = require("./routes/incidents");
+const userRouter = require("./routes/User");
+
+dotenv.config();
 
 const app = express();
+
 app.use(express.json());
-app.use(cors()); // Temporary wide-open CORS for testing
 
-// Simple Health Check
-app.get("/", (req, res) => res.send("API IS ALIVE"));
-
-// Import routes (Ensure these filenames match your folders EXACTLY)
-app.use("/api", require("./routes/auth"));
-app.use("/api/incidents", require("./routes/incidents"));
-app.use("/api/user", require("./routes/User")); // Check capitalization!
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Connected to MongoDB");
-    const PORT = process.env.PORT || 8080;
-    app.listen(PORT, "0.0.0.0", () => console.log(`Listening on ${PORT}`));
+// CORS middleware
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "https://rapidresponse-ege.pages.dev",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
-  .catch((err) => console.error("DB Error:", err));
+);
+
+// Preflight OPTIONS handler
+app.options("*", cors());
+
+// Serve static uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Routes
+app.use("/api", authRoutes);
+app.use("/api/incidents", incidentRoutes);
+app.use("/api/user", userRouter);
+
+// MongoDB connection
+mongoose
+  .connect(process.env.MONGO_URI, {})
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error(err));
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`Server running on port ${PORT}`)
+);
