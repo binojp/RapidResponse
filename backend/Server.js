@@ -1,9 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 
+// Route Imports
 const authRoutes = require("./routes/auth");
 const incidentRoutes = require("./routes/incidents");
 const userProfileRoutes = require("./routes/User");
@@ -31,14 +31,14 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.setHeader("Access-Control-Allow-Credentials", "true");
 
-  // If this is a preflight request, respond immediately with 200
+  // Handle Preflight: Respond with 200 OK immediately for OPTIONS
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }
   next();
 });
 
-// 2. Body Parser
+// 2. Standard Middleware
 app.use(express.json());
 
 // 3. Static Files
